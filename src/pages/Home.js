@@ -1,24 +1,48 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { featuredPlaylists, recentlyPlayed } from '../data/playlists';
+import { motion } from 'framer-motion';
+import { keyframes } from 'styled-components';
 
 const HomeContainer = styled.div`
   padding: 20px;
 `;
 
-const WelcomeSection = styled.div`
+const gradientAnimation = keyframes`
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+`;
+
+const WelcomeSection = styled(motion.div)`
   margin-bottom: 40px;
+  padding: 40px;
+  border-radius: 20px;
+  background: linear-gradient(45deg, 
+    ${props => props.theme.primary}22,
+    ${props => props.theme.playerBackground},
+    ${props => props.theme.primary}22);
+  background-size: 200% 200%;
+  animation: ${gradientAnimation} 10s ease infinite;
+  box-shadow: 0 10px 30px ${props => props.theme.shadow};
+
   h1 {
-    font-size: 2rem;
+    font-size: 3.5rem;
     color: ${props => props.theme.text};
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, ${props => props.theme.primary}, ${props => props.theme.text});
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
   }
+
   p {
     color: ${props => props.theme.textDim};
+    font-size: 1.2rem;
+    opacity: 0.8;
   }
 `;
 
@@ -167,11 +191,10 @@ const Home = () => {
     const track = carouselRef.current;
     if (!track) return;
     
-    const cardWidth = 270; // card width + gap
+    const cardWidth = 270;
     const scrollAmount = direction === 'next' ? cardWidth : -cardWidth;
     const newScrollPosition = track.scrollLeft + scrollAmount;
     
-    // Reset to start if reached end
     if (newScrollPosition >= track.scrollWidth - track.offsetWidth) {
       track.scrollLeft = 0;
     } else if (newScrollPosition < 0) {
@@ -182,7 +205,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // Auto scroll every 5 seconds
     timerRef.current = setInterval(() => {
       scrollCarousel('next');
     }, 5000);
@@ -195,14 +217,12 @@ const Home = () => {
   }, []);
 
   const handleManualScroll = (direction) => {
-    // Reset timer when manually scrolling
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
     
     scrollCarousel(direction);
     
-    // Restart auto scroll
     timerRef.current = setInterval(() => {
       scrollCarousel('next');
     }, 5000);
@@ -210,9 +230,25 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <WelcomeSection>
-        <h1>Welcome back!</h1>
-        <p>Pick up where you left off</p>
+      <WelcomeSection
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <motion.h1
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          Welcome back!
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          Pick up where you left off
+        </motion.p>
       </WelcomeSection>
 
       <GridSection>
@@ -240,7 +276,7 @@ const Home = () => {
           <CarouselButton className="prev" onClick={() => handleManualScroll('prev')}>
             <NavigateBeforeIcon />
           </CarouselButton>
-          <CarouselTrack className="carousel-track" ref={carouselRef}>
+          <CarouselTrack ref={carouselRef}>
             {recentlyPlayed.map(playlist => (
               <PlaylistCard key={playlist.id} style={{ minWidth: '250px' }}>
                 <PlaylistImage style={{ backgroundImage: `url(${playlist.image})` }}>

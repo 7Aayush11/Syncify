@@ -11,8 +11,7 @@ import PlaylistDetail from './pages/PlaylistDetail';
 import Layout from './components/Layout';
 import ThemeToggle from './components/ThemeToggle';
 
-
-function App() {
+const App = () => {
   const [theme, setTheme] = useState('dark');
 
   const toggleTheme = () => {
@@ -31,7 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile theme={theme} onThemeToggle={toggleTheme} />} />
             <Route path="/playlist/:id" element={<PlaylistDetail />} />
           </Routes>
         </Layout>

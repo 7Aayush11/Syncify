@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
-import HistoryIcon from '@mui/icons-material/History';
 import PersonIcon from '@mui/icons-material/Person';
 
 const ProfileContainer = styled.div`
@@ -169,12 +168,29 @@ const ToggleSwitch = styled.label`
   }
 `;
 
-const Profile = () => {
+const Profile = ({ theme, onThemeToggle }) => {
   const [settings, setSettings] = useState({
-    darkMode: true,
+    darkMode: theme === 'dark',
     notifications: true,
     publicProfile: false
   });
+
+  useEffect(() => {
+    setSettings(prev => ({
+      ...prev,
+      darkMode: theme === 'dark'
+    }));
+  }, [theme]);
+
+  const handleSettingChange = (key) => {
+    if (key === 'darkMode') {
+      onThemeToggle();
+    }
+    setSettings(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
 
   return (
     <ProfileContainer>
@@ -221,10 +237,7 @@ const Profile = () => {
                 <input
                   type="checkbox"
                   checked={value}
-                  onChange={() => setSettings(prev => ({
-                    ...prev,
-                    [key]: !prev[key]
-                  }))}
+                  onChange={() => handleSettingChange(key)}
                 />
                 <span></span>
               </ToggleSwitch>

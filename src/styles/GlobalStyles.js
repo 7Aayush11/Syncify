@@ -42,9 +42,6 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
-  // Remove the previous animations
-  // @keyframes gradientMovement {...}
-  // @keyframes shimmer {...}
   // Navigation and Layout
   .nav-link {
     color: ${props => props.theme.textDim};

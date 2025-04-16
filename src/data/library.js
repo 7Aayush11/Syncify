@@ -1,6 +1,6 @@
 export const playlists = [
   { id: 1, title: 'My Playlist #1', type: 'playlist', songs: 24, image: '/images/top_hits.jpg' },
-  { id: 2, title: 'Favorite Rock', type: 'playlist', songs: 45, image: '/images/chill.jpg' },
+  { id: 2, title: 'Favorite Rock', type: 'playlist', songs: 45, image: '/images/rock_music.avif' },
   { id: 3, title: 'Chill Mix', type: 'playlist', songs: 32, image: '/images/chill.jpg' },
 ];
 
