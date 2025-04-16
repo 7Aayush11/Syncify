@@ -16,11 +16,11 @@ export const usePlaylist = (songs, audioRef) => {
       audioRef.current.play()
         .catch(error => console.log("Auto-play prevented:", error));
     }
+    // eslint-disable-next-line 
   }, [currentIndex]);
 
   const selectSong = (index) => {
     if (index === currentIndex) {
-      // Toggle play/pause if selecting the current song
       if (audioRef.current.paused) {
         audioRef.current.play();
       } else {

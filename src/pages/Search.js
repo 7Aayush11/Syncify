@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PersonIcon from '@mui/icons-material/Person';
 import { searchData } from '../data/searchData';
 
 const SearchContainer = styled.div`
